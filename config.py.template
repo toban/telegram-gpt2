@@ -1,0 +1,13 @@
+class Setup:
+	config = {
+		"chat_id": 0, 
+		"tokens": {
+			"botname": '<token>',
+		},
+		"names": {
+			"botname": 'Bot name',
+		},
+		"voice_pitch": {
+			"balint_bot": 40,
+		}
+	}
