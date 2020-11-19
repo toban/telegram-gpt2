@@ -26,7 +26,7 @@ class Bot:
 			# vorbis-tools
 			os.system('espeak "' + message + '" -v sv -p '+ str(self.voice_pitch) +' -s 100 --stdout | oggenc -b 50 -o out.ogg -')
 			voice = open('out.ogg', 'rb')
-			self.dispatcher.bot.send_voice(Setup.config.chat_id, voice, None, message)
+			self.dispatcher.bot.send_voice(Setup.config['chat_id'], voice, None, message)
 			os.system('rm -f out.ogg')
 		except: # catch all
 			e = sys.exc_info()[0]
@@ -36,7 +36,7 @@ class Bot:
 	def talk(self, message):
 		self.logger.info(message)
 		try:
-			self.dispatcher.bot.send_message(chat_id=Setup.config.chat_id, text=message)
+			self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
