@@ -1,3 +1,5 @@
 tensorflow==1.15
 gpt_2_simple
 python-telegram-bot
+Pillow
+selenium

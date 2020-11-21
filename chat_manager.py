@@ -54,6 +54,8 @@ class ChatManager:
 		#bot.talk(trimmed)
 		bot.send_voice(trimmed)
 
+		self.last_raw_message = bot.name + ": " + trimmed
+
 
 		if text_length < 150:
 			time.sleep(5)
@@ -62,7 +64,10 @@ class ChatManager:
 
 	def getMessagesFromNetwork(self):
 		self.logger.info("generating new texts ...")
-		generated = gpt2.generate(self.sess, model_name="124M", return_as_list=True)
+		prefix = None
+		if self.last_raw_message:
+			prefix = self.last_raw_message
+		generated = gpt2.generate(self.sess, model_name="124M", return_as_list=True, prefix=prefix)
 		single_text = generated[0]
 		
 		#f = open("demofile2.txt", "a")
