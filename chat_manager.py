@@ -12,6 +12,7 @@ class ChatManager:
 	def __init__(self, chat_id, bots, setup):
 
 		self.last_message = None
+		self.last_raw_message = None
 		self.chat_id = chat_id
 		self.bots = bots
 		self.messages = []
