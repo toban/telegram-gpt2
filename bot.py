@@ -38,7 +38,7 @@ class Bot:
 		self.logger.info(message)
 		try:
 			if reply_message is not None:
-				reply_message.reply_text(message)
+				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message, reply_to_message_id=reply_message.message_id)
 			else:
 				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)
 		except: # catch all
