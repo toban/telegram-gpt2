@@ -114,8 +114,8 @@ class ChatManager:
 
 		self.last_raw_message = bot.name + ": " + trimmed
 
-
-		if text_length < 150:
-			time.sleep(5)
+		word_count = len(trimmed.split())
+		if word_count > 10:
+			time.sleep(word_count)
 		else:
 			time.sleep(10)
