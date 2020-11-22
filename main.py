@@ -24,7 +24,10 @@ manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generato
 while True:
 	if manager.prefix_message:
 		manager.training = True
-		manager.messages = manager.text_generator.getMessages(manager.prefix_message, 256)
+		messages = manager.text_generator.getMessages(manager.prefix_message, 256)
+		messages.pop(0)
+		manager.messages = messages
+
 		manager.training = False
 		manager.prefix_message = None
 		print(manager.messages)
