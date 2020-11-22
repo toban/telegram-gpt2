@@ -30,6 +30,7 @@ class ChatManager:
 		self.logger = logging.getLogger('ChatManager')
 		self.training = False
 		self.last_prefix_time = None
+		self.reply_message = None
 
 	def getPrefixMessages(self):
 		self.training = True
