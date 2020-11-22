@@ -78,7 +78,7 @@ class ChatManager:
 			return self.update()
 
 		# remove duplicates
-		if(self.last_message == trimmed):
+		if(self.last_raw_message == bot.name + ": " + trimmed):
 			return self.update()
 
 		self.last_message = trimmed
