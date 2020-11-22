@@ -25,7 +25,10 @@ while True:
 	if manager.prefix_message:
 		manager.training = True
 		messages = manager.text_generator.getMessages(manager.prefix_message, 256)
-		messages.pop(0)
+		
+		if len(messages) > 0 and messages[0] == manager.prefix_message:
+			messages.pop(0)
+		
 		manager.messages = messages
 
 		manager.training = False
