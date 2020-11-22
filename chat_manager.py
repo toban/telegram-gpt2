@@ -6,12 +6,13 @@ import gpt_2_simple as gpt2
 import sys
 from config import Setup
 import os
+import random
 
 class ChatManager:
  
-	def __init__(self, chat_id, bots, setup, text_generator, prefix_setter):
+	def __init__(self, chat_id, bots, setup, text_generator, prefix_getter):
 
-		self.prefix_setter = prefix_setter
+		self.prefix_getter = prefix_getter
 		self.updater = Updater(token=setup['manager_bot'], use_context=True)
 		self.dispatcher = self.updater.dispatcher
 		self.dispatcher.add_handler(MessageHandler(Filters.chat(chat_id) & Filters.text & ~Filters.command, self.messageHandler))
@@ -57,15 +58,19 @@ class ChatManager:
 			self.logger.info("user " + username + " not registered")
 			return
 
-		self.last_prefix_time = time.time()
+		self.reply_message = update.message
 		bot_name = self.setup['user_to_bot'][username]
 		user_text_name = self.setup['names'][bot_name]
 
-		#self.logger.info()
-		self.prefix_message = user_text_name + ": " + update.message.text
+		self.setPrefixMessage(bot_name, update.message.text)
+		
+	def setPrefixMessage(self, bot_name, prefix_message):
+		self.prefix_message = bot_name + ": " + prefix_message
+
+		self.last_prefix_time = time.time()
+
 		self.logger.info(self.prefix_message)
 
-	
 	def getBotByMessage(self, message):
 		for bot in self.bots:
 			if message.startswith(bot.name):
@@ -75,12 +80,11 @@ class ChatManager:
 
 	def update(self):
 
-		if time.time() - self.last_prefix_time > 1000*60*60:
-			self.prefix_message = prefix_setter.getPrefix()
-			self.getPrefixMessages()
-
-
 		if not self.messages:
+			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:
+				self.setPrefixMessage(random.choice(self.bots).name, self.prefix_getter.getPrefix())
+				self.getPrefixMessages()
+
 			time.sleep(1)
 			return
 			#self.messages = self.text_generator.getMessages()
@@ -103,7 +107,8 @@ class ChatManager:
 			return self.update()
 
 		self.last_message = trimmed
-		bot.talk(trimmed)
+		bot.talk(trimmed, self.reply_message)
+		self.reply_message = None
 		#bot.send_voice(trimmed)
 
 		self.last_raw_message = bot.name + ": " + trimmed

@@ -23,6 +23,7 @@ for bot in Setup.config['tokens']:
 text_generator = TextGenerator()
 prefix_getter = DNPrefixGetter()
 
+
 manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
 while True:
 	if manager.prefix_message:

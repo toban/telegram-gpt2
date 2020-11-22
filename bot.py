@@ -34,10 +34,13 @@ class Bot:
 			self.logger.error(e)
 			raise e
 
-	def talk(self, message):
+	def talk(self, message, reply_message=None):
 		self.logger.info(message)
 		try:
-			self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)
+			if reply_message is not None:
+				reply_message.reply_text(message)
+			else:
+				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)

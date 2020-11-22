@@ -3,3 +3,4 @@ gpt_2_simple
 python-telegram-bot
 Pillow
 selenium
+feedparser
