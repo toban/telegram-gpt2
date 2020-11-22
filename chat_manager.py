@@ -38,6 +38,7 @@ class ChatManager:
 
 		username = update.message.from_user.name
 		if username not in self.setup['user_to_bot']:
+			update.message.reply_text("user " + username + " not registered")
 			self.logger.info("user " + username + " not registered")
 			return
 
@@ -48,7 +49,6 @@ class ChatManager:
 		self.prefix_message = user_text_name + ": " + update.message.text
 		self.logger.info(self.prefix_message)
 
-		#update.message.reply_text(update.message.text)
 	
 	def getBotByMessage(self, message):
 		for bot in self.bots:
