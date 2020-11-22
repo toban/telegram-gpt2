@@ -2,6 +2,8 @@ from prefix_getter import PrefixGetter
 import feedparser
 import random
 import time
+import logging
+
 
 class DNPrefixGetter(PrefixGetter):
 	def __init__(self):
@@ -14,7 +16,7 @@ class DNPrefixGetter(PrefixGetter):
 			'https://www.flashback.org/external.php?type=rss'
 			'https://www.reddit.com/r/sweden/.rss'
 		]
-		self.logger = logging.getLogger('Bot: ' + name)
+		self.logger = logging.getLogger("PrefixGetter")
 
 		self.index = 0
 		self.posts = []
