@@ -63,7 +63,7 @@ class ChatManager:
 		bot_name = self.setup['user_to_bot'][username]
 		user_text_name = self.setup['names'][bot_name]
 
-		self.setPrefixMessage(bot_name, update.message.text)
+		self.setPrefixMessage(user_text_name, update.message.text)
 		
 	def setPrefixMessage(self, bot_name, prefix_message):
 		self.prefix_message = bot_name + ": " + prefix_message
