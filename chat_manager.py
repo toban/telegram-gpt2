@@ -9,8 +9,9 @@ import os
 
 class ChatManager:
  
-	def __init__(self, chat_id, bots, setup, text_generator):
+	def __init__(self, chat_id, bots, setup, text_generator, prefix_setter):
 
+		self.prefix_setter = prefix_setter
 		self.updater = Updater(token=setup['manager_bot'], use_context=True)
 		self.dispatcher = self.updater.dispatcher
 		self.dispatcher.add_handler(MessageHandler(Filters.chat(chat_id) & Filters.text & ~Filters.command, self.messageHandler))
@@ -27,6 +28,20 @@ class ChatManager:
 		self.setup = setup
 		self.logger = logging.getLogger('ChatManager')
 		self.training = False
+		self.last_prefix_time = None
+
+	def getPrefixMessages(self):
+		self.training = True
+		messages = self.text_generator.getMessages(self.prefix_message, 256)
+		
+		if len(messages) > 0 and messages[0] == self.prefix_message:
+			messages.pop(0)
+		
+		self.messages = messages
+
+		self.training = False
+		self.prefix_message = None
+		print(self.messages)
 
 	def messageHandler(self, update: Update, context: CallbackContext) -> None:
 		"""Echo the user message."""
@@ -42,6 +57,7 @@ class ChatManager:
 			self.logger.info("user " + username + " not registered")
 			return
 
+		self.last_prefix_time = time.time()
 		bot_name = self.setup['user_to_bot'][username]
 		user_text_name = self.setup['names'][bot_name]
 
@@ -58,6 +74,11 @@ class ChatManager:
 		return None
 
 	def update(self):
+
+		if time.time() - self.last_prefix_time > 1000*60*60:
+			self.prefix_message = prefix_setter.getPrefix()
+			self.getPrefixMessages()
+
 
 		if not self.messages:
 			time.sleep(1)

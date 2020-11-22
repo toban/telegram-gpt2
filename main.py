@@ -10,6 +10,7 @@ import os
 from bot import Bot
 from chat_manager import ChatManager
 from text_generator import TextGenerator
+from dn_prefix_getter import DNPrefixGetter
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
@@ -20,20 +21,12 @@ for bot in Setup.config['tokens']:
 	bots.append(Bot(Setup.config['tokens'][bot], Setup.config['names'][bot], Setup.config['voice_pitch'][bot]))
 
 text_generator = TextGenerator()
-manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator)
+prefix_getter = DNPrefixGetter()
+
+manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
 while True:
 	if manager.prefix_message:
-		manager.training = True
-		messages = manager.text_generator.getMessages(manager.prefix_message, 256)
-		
-		if len(messages) > 0 and messages[0] == manager.prefix_message:
-			messages.pop(0)
-		
-		manager.messages = messages
-
-		manager.training = False
-		manager.prefix_message = None
-		print(manager.messages)
+		manager.getPrefixMessages()
 	else:
 		manager.update()
 
