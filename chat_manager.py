@@ -82,7 +82,7 @@ class ChatManager:
 	def update(self):
 
 		if not self.messages:
-			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:
+			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60*5:
 				self.setPrefixMessage(random.choice(self.bots).name, self.prefix_getter.getPrefix())
 				self.getPrefixMessages()
 
