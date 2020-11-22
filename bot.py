@@ -1,6 +1,6 @@
 from telegram import Update
 import logging
-from telegram.ext import CommandHandler, Updater
+from telegram.ext import CommandHandler, Updater, MessageHandler, Filters, CallbackContext
 import time
 import gpt_2_simple as gpt2
 import sys
@@ -19,7 +19,8 @@ class Bot:
 		self.name = name
 		self.voice_pitch = voice_pitch
 		self.logger = logging.getLogger('Bot: ' + name)
-	
+		self.logger.info("starting bot!")
+
 	def send_voice(self, message):
 		self.logger.info("send voice: " + message)
 		try:
@@ -31,7 +32,7 @@ class Bot:
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
-
+			raise e
 
 	def talk(self, message):
 		self.logger.info(message)
@@ -40,3 +41,4 @@ class Bot:
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
+			raise e

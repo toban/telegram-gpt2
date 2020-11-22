@@ -1,6 +1,6 @@
 from telegram import Update
 import logging
-from telegram.ext import CommandHandler, Updater
+from telegram.ext import CommandHandler, Updater, MessageHandler, Filters, CallbackContext
 import time
 import gpt_2_simple as gpt2
 import sys
@@ -9,8 +9,15 @@ import os
 
 class ChatManager:
  
-	def __init__(self, chat_id, bots, setup):
+	def __init__(self, chat_id, bots, setup, text_generator):
 
+		self.updater = Updater(token=setup['manager_bot'], use_context=True)
+		self.dispatcher = self.updater.dispatcher
+		self.dispatcher.add_handler(MessageHandler(Filters.chat(chat_id) & Filters.text & ~Filters.command, self.messageHandler))
+		self.updater.start_polling()
+
+		self.prefix_message = None
+		self.text_generator = text_generator
 		self.last_message = None
 		self.last_raw_message = None
 		self.chat_id = chat_id
@@ -19,9 +26,30 @@ class ChatManager:
 		self.messagesSwap = []
 		self.setup = setup
 		self.logger = logging.getLogger('ChatManager')
-		self.sess = gpt2.start_tf_sess()
-		gpt2.load_gpt2(self.sess)
+		self.training = False
 
+	def messageHandler(self, update: Update, context: CallbackContext) -> None:
+		"""Echo the user message."""
+		#prefix =" print()
+		print(dir(update.message))
+		if self.training:
+			self.logger.info("getting messages, ignoring")
+			return
+
+		username = update.message.from_user.name
+		if username not in self.setup['user_to_bot']:
+			self.logger.info("user " + username + " not registered")
+			return
+
+		bot_name = self.setup['user_to_bot'][username]
+		user_text_name = self.setup['names'][bot_name]
+
+		#self.logger.info()
+		self.prefix_message = user_text_name + ": " + update.message.text
+		self.logger.info(self.prefix_message)
+
+		#update.message.reply_text(update.message.text)
+	
 	def getBotByMessage(self, message):
 		for bot in self.bots:
 			if message.startswith(bot.name):
@@ -32,9 +60,11 @@ class ChatManager:
 	def update(self):
 
 		if not self.messages:
-			self.getMessages()
+			time.sleep(1)
+			return
+			#self.messages = self.text_generator.getMessages()
 
-		message = self.messages.pop()
+		message = self.messages.pop(0)
 		bot = self.getBotByMessage(message)
 		if bot is None:
 			self.logger.warning('no bot found from text')
@@ -52,8 +82,8 @@ class ChatManager:
 			return self.update()
 
 		self.last_message = trimmed
-		#bot.talk(trimmed)
-		bot.send_voice(trimmed)
+		bot.talk(trimmed)
+		#bot.send_voice(trimmed)
 
 		self.last_raw_message = bot.name + ": " + trimmed
 
@@ -62,25 +92,3 @@ class ChatManager:
 			time.sleep(5)
 		else:
 			time.sleep(10)
-
-	def getMessagesFromNetwork(self):
-		self.logger.info("generating new texts ...")
-		prefix = None
-		if self.last_raw_message:
-			prefix = self.last_raw_message
-		generated = gpt2.generate(self.sess, model_name="124M", return_as_list=True, prefix=prefix)
-		single_text = generated[0]
-		
-		#f = open("demofile2.txt", "a")
-		#f.write(single_text)
-		#f.write("\n")
-		#f.close()
-		self.logger.info("done generating!")
-
-		return single_text.splitlines()
-
-
-	def getMessages(self):
-		messages = self.getMessagesFromNetwork()
-
-		self.messages = messages

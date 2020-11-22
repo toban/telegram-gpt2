@@ -1,6 +1,14 @@
 class Setup:
 	config = {
 		"chat_id": 0, 
+		"manager_bot": '<TOKEN>',
+		"manager_bot_name": 'manager_botname',
+
+
+		"user_to_bot": {
+			"<@username>": '<botname>'
+		},
+
 		"tokens": {
 			"botname": '<token>',
 		},
@@ -8,6 +16,6 @@ class Setup:
 			"botname": 'Bot name',
 		},
 		"voice_pitch": {
-			"balint_bot": 40,
+			"botname": 40,
 		}
 	}
