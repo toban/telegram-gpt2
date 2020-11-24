@@ -9,13 +9,9 @@ import sys
 class DNPrefixGetter(PrefixGetter):
 	def __init__(self):
 		self.rss_feeds = [
-			'http://expressen.se/rss/nyheter',
-			'https://rss.aftonbladet.se/rss2/small/pages/sections/aftonbladet/',
-			'http://api.sr.se/api/rss/program/83?format=145',
-			'https://www.svt.se/nyheter/rss.xml',
-			'https://www.reddit.com/r/svenskpolitik/.rss',
-			'https://www.flashback.org/external.php?type=rss'
-			'https://www.reddit.com/r/sweden/.rss'
+			'http://www.reddit.com/r/svenskpolitik/.rss',
+			'http://www.flashback.org/external.php?type=rss'
+			'http://www.reddit.com/r/sweden/.rss'
 		]
 		self.logger = logging.getLogger("PrefixGetter")
 
@@ -41,7 +37,7 @@ class DNPrefixGetter(PrefixGetter):
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
-			time.sleep(10)
+			#time.sleep(10)
 			return self.getPost()
 
 	def getPrefix(self, bot) -> str:
