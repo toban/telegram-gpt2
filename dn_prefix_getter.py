@@ -4,6 +4,8 @@ import random
 import time
 import logging
 import sys
+import requests
+from io import BytesIO
 
 
 class DNPrefixGetter(PrefixGetter):
@@ -19,13 +21,22 @@ class DNPrefixGetter(PrefixGetter):
 		self.posts = []
 
 	def getPost(self):
+		
 		source = random.choice(self.rss_feeds)
+		self.logger.info("getPost: " + source)
 		try:
 
-			NewsFeed = feedparser.parse(source)
+			# Do request using requests library and timeout
+			resp = requests.get(source, timeout=20.0)
+			content = BytesIO(resp.content)
+			self.logger.info("got response!")
+
+			# Parse content
+			NewsFeed = feedparser.parse(content)
+
 			entry = random.choice(NewsFeed.entries)
 
-			if len(self.posts) > 100:
+			if len(self.posts) > 200:
 				self.posts = []
 
 			if(entry['title'] in self.posts):
@@ -33,7 +44,9 @@ class DNPrefixGetter(PrefixGetter):
 
 			self.posts.append(entry['title'])
 			return entry
-
+		except KeyboardInterrupt:
+			e = sys.exc_info()[0]
+			raise e
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
