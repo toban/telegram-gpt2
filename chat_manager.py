@@ -51,6 +51,7 @@ class ChatManager:
 		print(dir(update.message))
 		if self.training:
 			self.logger.info("getting messages, ignoring")
+			update.message.reply_text("Calcumalating ... " + self.prefix_message)
 			return
 
 		username = update.message.from_user.name
@@ -59,9 +60,13 @@ class ChatManager:
 			self.logger.info("user " + username + " not registered")
 			return
 
+
+
 		self.reply_message = update.message
 		bot_name = self.setup['user_to_bot'][username]
 		user_text_name = self.setup['names'][bot_name]
+
+		update.message.reply_text("Asking bots about: " + update.message.text)
 
 		self.setPrefixMessage(user_text_name, update.message.text)
 		
