@@ -42,7 +42,7 @@ class ChatManager:
 		self.messages = messages
 
 		self.training = False
-		self.prefix_message = None
+		#self.prefix_message = None
 		print(self.messages)
 
 	def messageHandler(self, update: Update, context: CallbackContext) -> None:
@@ -86,15 +86,19 @@ class ChatManager:
 
 	def update(self):
 
-		if not self.messages:
-			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:#*5:
+		if len(self.messages) == 0:
+			self.logger.info('no messages ...')
+			#if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:#*5:
+			if self.prefix_message is not None:
 				bot = random.choice(self.bots)
-				self.setPrefixMessage(bot.name, self.prefix_getter.getPrefix(bot))
+				self.setPrefixMessage(bot.name, self.prefix_message)#self.prefix_getter.getPrefix(bot))
 				self.getPrefixMessages()
-
-			time.sleep(1)
-			return
+			else:
+				time.sleep(1)
+				return
 			#self.messages = self.text_generator.getMessages()
+		self.logger.info('has message!')
+
 
 		message = self.messages.pop(0)
 		bot = self.getBotByMessage(message)

@@ -50,7 +50,7 @@ class DNPrefixGetter(PrefixGetter):
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
-			#time.sleep(10)
+			time.sleep(10)
 			return self.getPost()
 
 	def getPrefix(self, bot) -> str:
