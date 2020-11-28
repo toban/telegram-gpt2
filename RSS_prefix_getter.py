@@ -16,6 +16,7 @@ class RSSPrefixGetter(PrefixGetter):
 		self.feed_responses = {}
 		self.index = 0
 		self.posts = []
+		self.num_entries = 0
 
 	def getFeed(self, source):
 
@@ -31,7 +32,10 @@ class RSSPrefixGetter(PrefixGetter):
 		self.logger.info("got response!")
 
 		# Parse content
-		self.feed_responses[source] =  feedparser.parse(content)
+		feed =  feedparser.parse(content)
+		feed_num_entries = len(feed.entries)
+		self.num_entries += feed_num_entries
+		self.feed_responses[source] = feed
 		return self.feed_responses[source]
 
 	def getPost(self):
@@ -42,9 +46,10 @@ class RSSPrefixGetter(PrefixGetter):
 
 			entry = random.choice(NewsFeed.entries)
 
-			if len(self.posts) > 200:
+			if self.num_entries != 0 and len(self.posts) >= self.num_entries:
 				self.feed_responses = {}
 				self.posts = []
+				self.num_entries = 0
 
 			if(entry['title'] in self.posts):
 				return self.getPost()
