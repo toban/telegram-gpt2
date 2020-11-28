@@ -42,13 +42,13 @@ class ChatManager:
 		self.messages = messages
 
 		self.training = False
-		#self.prefix_message = None
+		self.prefix_message = None
 		print(self.messages)
 
 	def messageHandler(self, update: Update, context: CallbackContext) -> None:
-		"""Echo the user message."""
-		#prefix =" print()
-		print(dir(update.message))
+
+		# todo ignore really old messages
+
 		if self.training:
 			self.logger.info("getting messages, ignoring")
 			update.message.reply_text("Calcumalating ... " + self.prefix_message)
@@ -88,10 +88,9 @@ class ChatManager:
 
 		if len(self.messages) == 0:
 			self.logger.info('no messages ...')
-			#if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:#*5:
-			if self.prefix_message is not None:
+			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:#*5:
 				bot = random.choice(self.bots)
-				self.setPrefixMessage(bot.name, self.prefix_message)#self.prefix_getter.getPrefix(bot))
+				self.setPrefixMessage(bot.name, self.prefix_getter.getPrefix(bot))
 				self.getPrefixMessages()
 			else:
 				time.sleep(1)

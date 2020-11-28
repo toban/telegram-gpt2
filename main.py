@@ -10,7 +10,7 @@ import os
 from bot import Bot
 from chat_manager import ChatManager
 from text_generator import TextGenerator
-from dn_prefix_getter import DNPrefixGetter
+from RSS_prefix_getter import RSSPrefixGetter
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
@@ -21,8 +21,7 @@ for bot in Setup.config['tokens']:
 	bots.append(Bot(Setup.config['tokens'][bot], Setup.config['names'][bot], Setup.config['voice_pitch'][bot]))
 
 text_generator = TextGenerator()
-prefix_getter = DNPrefixGetter()
-
+prefix_getter = RSSPrefixGetter(Setup.config['rss_feeds'])
 
 manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
 while True:

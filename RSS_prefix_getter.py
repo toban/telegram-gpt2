@@ -8,35 +8,42 @@ import requests
 from io import BytesIO
 
 
-class DNPrefixGetter(PrefixGetter):
-	def __init__(self):
-		self.rss_feeds = [
-			'http://www.reddit.com/r/svenskpolitik/.rss',
-			'http://www.flashback.org/external.php?type=rss'
-			'http://www.reddit.com/r/sweden/.rss'
-		]
+class RSSPrefixGetter(PrefixGetter):
+	def __init__(self, feeds):
+		self.rss_feeds = feeds
 		self.logger = logging.getLogger("PrefixGetter")
 
+		self.feed_responses = {}
 		self.index = 0
 		self.posts = []
 
+	def getFeed(self, source):
+
+		if source in self.feed_responses:
+			self.logger.info("getFeed: " + source + " already exists")
+
+			return self.feed_responses[source]
+
+		# Do request using requests library and timeout
+		resp = requests.get(source, timeout=20.0)
+		content = BytesIO(resp.content)
+		print(resp.content)
+		self.logger.info("got response!")
+
+		# Parse content
+		self.feed_responses[source] =  feedparser.parse(content)
+		return self.feed_responses[source]
+
 	def getPost(self):
-		
 		source = random.choice(self.rss_feeds)
 		self.logger.info("getPost: " + source)
 		try:
-
-			# Do request using requests library and timeout
-			resp = requests.get(source, timeout=20.0)
-			content = BytesIO(resp.content)
-			self.logger.info("got response!")
-
-			# Parse content
-			NewsFeed = feedparser.parse(content)
+			NewsFeed = self.getFeed(source) 
 
 			entry = random.choice(NewsFeed.entries)
 
 			if len(self.posts) > 200:
+				self.feed_responses = {}
 				self.posts = []
 
 			if(entry['title'] in self.posts):

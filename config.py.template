@@ -1,8 +1,9 @@
 class Setup:
 	config = {
-		"chat_id": 0, 
+		"chat_id": 0,
 		"manager_bot": '<TOKEN>',
 		"manager_bot_name": 'manager_botname',
+		"rss_feeds": [],
 
 
 		"user_to_bot": {
