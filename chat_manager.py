@@ -125,6 +125,6 @@ class ChatManager:
 
 		word_count = len(trimmed.split())
 		if word_count < 10:
-			time.sleep(word_count/2)
+			time.sleep(word_count)
 		else:
 			time.sleep(10)
