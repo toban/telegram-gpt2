@@ -40,7 +40,7 @@ class Bot:
 			if reply_message is not None:
 				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)#, reply_to_message_id=reply_message.message_id)
 			else:
-				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)
+				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message, disable_notification=true)
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)
