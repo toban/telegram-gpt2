@@ -7,6 +7,7 @@ import sys
 from config import Setup
 import os
 import random
+import image_search
 
 class ChatManager:
  
@@ -32,6 +33,9 @@ class ChatManager:
 		self.last_prefix_time = None
 		self.reply_message = None
 
+		self.IMAGE_KEY = "!image "
+		self.IMAGE_KEY_LENGTH = len(self.IMAGE_KEY)
+
 	def getPrefixMessages(self):
 		self.training = True
 		messages = self.text_generator.getMessages(self.prefix_message, 256)
@@ -45,9 +49,21 @@ class ChatManager:
 		#self.prefix_message = None
 		print(self.messages)
 
+	def getImage(self, text):
+		self.logger.info('getting images for: ' + text)
+		files = image_search.get_image(text)
+
+		for image in files:
+			self.updater.bot.send_photo(chat_id=self.chat_id, photo=open(image, 'rb'))
+
 	def messageHandler(self, update: Update, context: CallbackContext) -> None:
 		"""Echo the user message."""
 		#prefix =" print()
+
+		if update.message.text.startswith(self.IMAGE_KEY):
+			return self.getImage(update.message.text[self.IMAGE_KEY_LENGTH:])
+
+
 		print(dir(update.message))
 		if self.training:
 			self.logger.info("getting messages, ignoring")

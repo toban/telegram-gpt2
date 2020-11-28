@@ -69,7 +69,29 @@ def fetch_image_urls(query:str, max_links_to_fetch:int, wd:webdriver, sleep_betw
 
 	return image_urls
 
-def persist_image(folder_path:str,file_name:str,url:str):
+def get_image(query):
+	chrome_options = Options()
+	chrome_options.add_argument("--headless")
+	wd = webdriver.Remote('http://localhost:4444/wd/hub', webdriver.DesiredCapabilities.CHROME)
+	wd.set_window_size(1280, 1024)
+	wd.get('https://google.com')
+	search_box = wd.find_element_by_css_selector('input.gLFyf')
+	search_box.send_keys(query)
+	links = fetch_image_urls(query,10,wd)
+	images_path = '/tmp/'
+	
+	files = []
+	for i in links:
+		file = persist_image(images_path, query, i)
+		if file is not None:
+			files.append(file)
+	
+	wd.quit()
+
+	return files
+
+def persist_image(folder_path:str, file_name:str, url:str):
+	file = None
 	try:
 		image_content = requests.get(url).content
 
@@ -87,23 +109,9 @@ def persist_image(folder_path:str,file_name:str,url:str):
 			file_path = os.path.join(folder_path,hashlib.sha1(image_content).hexdigest()[:10] + '.jpg')
 		with open(file_path, 'wb') as f:
 			image.save(f, "JPEG", quality=85)
+			file = file_path
 		print(f"SUCCESS - saved {url} - as {file_path}")
 	except Exception as e:
 		print(f"ERROR - Could not save {url} - {e}")
 
-if __name__ == '__main__':
-	chrome_options = Options()
-	chrome_options.add_argument("--headless")
-	wd = webdriver.Remote('http://localhost:4444/wd/hub', webdriver.DesiredCapabilities.CHROME)
-	wd.set_window_size(1280, 1024)
-	queries = ["tegnell"]  #change your set of querries here
-	for query in queries:
-		wd.get('https://google.com')
-		search_box = wd.find_element_by_css_selector('input.gLFyf')
-		search_box.send_keys(query)
-		links = fetch_image_urls(query,2,wd)
-		#images_path = '/Users/anand/Desktop/contri/images'  #enter your desired image path
-		images_path = '/tmp/'
-		for i in links:
-			persist_image(images_path,query,i)
-	wd.quit()
+	return file

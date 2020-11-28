@@ -25,11 +25,13 @@ prefix_getter = DNPrefixGetter()
 
 
 manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
-while True:
+files = manager.getImage('hello')
+print(files)
+#while True:
 	#if manager.prefix_message:
 	#	manager.getPrefixMessages()
 	#else:
-	manager.update()
+	#manager.update()
 
 
 print('hello')
