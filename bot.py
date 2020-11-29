@@ -41,6 +41,9 @@ class Bot:
 				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message)#, reply_to_message_id=reply_message.message_id)
 			else:
 				self.dispatcher.bot.send_message(chat_id=Setup.config['chat_id'], text=message, disable_notification=True)
+		except telegram.error.TimedOut:
+			self.logger.error("timeout!")
+			time.sleep(10)
 		except: # catch all
 			e = sys.exc_info()[0]
 			self.logger.error(e)

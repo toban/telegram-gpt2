@@ -16,7 +16,7 @@ class TextGenerator:
 
 	def getMessages(self, prefix=None, length=1023):
 		self.logger.info("generating new texts ...")
-		generated = gpt2.generate(self.sess, model_name="124M", return_as_list=True, prefix=prefix, length=length)
+		generated = gpt2.generate(self.sess, model_name="124M", return_as_list=True, prefix=prefix, length=length, temperature=1.0)
 		single_text = generated[0]
 		#f = open("demofile2.txt", "a")
 		#f.write(single_text)
