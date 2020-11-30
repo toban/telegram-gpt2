@@ -90,7 +90,7 @@ class ChatManager:
 			self.logger.info('no messages ...')
 			if self.last_prefix_time is None or time.time() - self.last_prefix_time > 60:#*5:
 				bot = random.choice(self.bots)
-				self.setPrefixMessage(bot.name, self.prefix_getter.getPrefix(bot))
+				self.setPrefixMessage(bot.name, self.prefix_getter.getPrefix(bot, self.last_message))
 				self.getPrefixMessages()
 			else:
 				time.sleep(1)

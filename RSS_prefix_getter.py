@@ -65,7 +65,7 @@ class RSSPrefixGetter(PrefixGetter):
 			time.sleep(10)
 			return self.getPost()
 
-	def getPrefix(self, bot) -> str:
+	def getPrefix(self, bot, last_message) -> str:
 		
 		entry = self.getPost()
 
