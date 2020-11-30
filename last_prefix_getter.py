@@ -11,4 +11,7 @@ from io import BytesIO
 class LastPrefixGetter(PrefixGetter):
 
 	def getPrefix(self, bot, last_message) -> str:
-		return self.last_message
+		if last_message is None:
+			return "hello"
+		else:
+			return last_message
