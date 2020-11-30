@@ -92,6 +92,7 @@ class ChatManager:
 				bot = random.choice(self.bots)
 				self.setPrefixMessage(bot.name, self.prefix_getter.getPrefix(bot, self.last_message))
 				self.getPrefixMessages()
+				return
 			else:
 				time.sleep(1)
 				return
