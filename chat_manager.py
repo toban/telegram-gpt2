@@ -89,6 +89,7 @@ class ChatManager:
 
 		if self.training:
 			self.logger.warning('training ...')
+			time.sleep(10)
 			return
 
 		if len(self.messages) == 0:

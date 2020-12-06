@@ -33,7 +33,7 @@ while True:
 	try:
 		manager.update()
 	except:
-		if manager.training:
+		if manager.training is True:
 			manager.training = False
 
 		e = sys.exc_info()[0]
