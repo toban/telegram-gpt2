@@ -33,8 +33,12 @@ while True:
 	try:
 		manager.update()
 	except:
+		if manager.training:
+			manager.training = False
+
 		e = sys.exc_info()[0]
 		logger.error(e)
+		time.sleep(10)
 
 
 print('hello')
