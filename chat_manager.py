@@ -34,7 +34,10 @@ class ChatManager:
 
 	def getPrefixMessages(self):
 		self.training = True
-		messages = self.text_generator.getMessages(self.prefix_message)
+		try: 
+			messages = self.text_generator.getMessages(self.prefix_message)
+		except: 
+			messages = []
 		
 		if len(messages) > 0 and messages[0] == self.prefix_message:
 			messages.pop(0)
