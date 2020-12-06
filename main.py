@@ -23,13 +23,19 @@ for bot in Setup.config['tokens']:
 
 text_generator = TextGenerator()
 prefix_getter = LastPrefixGetter() #RSSPrefixGetter(Setup.config['rss_feeds'])
+logger = logging.getLogger('Main')
 
 manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
 while True:
 	#if manager.prefix_message:
 	#	manager.getPrefixMessages()
 	#else:
-	manager.update()
+	try:
+		manager.update()
+	except:
+		e = sys.exc_info()[0]
+		self.logger.error(e)
+		logger.error(e)
 
 
 print('hello')
