@@ -7,6 +7,7 @@ import sys
 from config import Setup
 import os
 import random
+import traceback
 
 class ChatManager:
  
@@ -38,7 +39,10 @@ class ChatManager:
 			messages = self.text_generator.getMessages(self.prefix_message)
 		except: 
 			messages = []
-		
+			e = sys.exc_info()[0]
+			self.logger.error(e)
+			traceback.print_exc() 
+
 		if len(messages) > 0 and messages[0] == self.prefix_message:
 			messages.pop(0)
 		
