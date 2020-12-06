@@ -34,7 +34,7 @@ class ChatManager:
 
 	def getPrefixMessages(self):
 		self.training = True
-		messages = self.text_generator.getMessages(self.prefix_message )
+		messages = self.text_generator.getMessages(self.prefix_message)
 		
 		if len(messages) > 0 and messages[0] == self.prefix_message:
 			messages.pop(0)
@@ -70,7 +70,7 @@ class ChatManager:
 
 		self.setPrefixMessage(user_text_name, update.message.text)
 		self.getPrefixMessages()
-		
+
 	def setPrefixMessage(self, bot_name, prefix_message):
 		self.prefix_message = bot_name + ": " + prefix_message
 
@@ -86,6 +86,10 @@ class ChatManager:
 		return None
 
 	def update(self):
+
+		if self.training:
+			self.logger.warning('training ...')
+			return
 
 		if len(self.messages) == 0:
 			self.logger.info('no messages ...')
