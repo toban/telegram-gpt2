@@ -69,6 +69,7 @@ class ChatManager:
 		update.message.reply_text("Asking bots about: " + update.message.text)
 
 		self.setPrefixMessage(user_text_name, update.message.text)
+		self.getPrefixMessages()
 		
 	def setPrefixMessage(self, bot_name, prefix_message):
 		self.prefix_message = bot_name + ": " + prefix_message
