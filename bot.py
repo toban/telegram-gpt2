@@ -1,5 +1,6 @@
 from telegram import Update
 import logging
+import telegram
 from telegram.ext import CommandHandler, Updater, MessageHandler, Filters, CallbackContext
 import time
 import gpt_2_simple as gpt2
