@@ -13,7 +13,7 @@ from text_generator import TextGenerator
 from RSS_prefix_getter import RSSPrefixGetter
 from last_prefix_getter import LastPrefixGetter
 
-logging.basicConfig(filename=Setup.config['logfile'], ormat='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(filename=Setup.config['logfile'], format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
 bots = []
