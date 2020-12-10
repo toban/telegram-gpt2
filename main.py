@@ -13,7 +13,7 @@ from text_generator import TextGenerator
 from RSS_prefix_getter import RSSPrefixGetter
 from last_prefix_getter import LastPrefixGetter
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(filename=Setup.config['logfile'], ormat='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
 bots = []
@@ -27,9 +27,6 @@ logger = logging.getLogger('Main')
 
 manager = ChatManager(Setup.config['chat_id'], bots, Setup.config, text_generator, prefix_getter)
 while True:
-	#if manager.prefix_message:
-	#	manager.getPrefixMessages()
-	#else:
 	try:
 		manager.update()
 	except:
