@@ -73,7 +73,7 @@ class ChatManager:
 		text = update.message.text
 
 		# if message was a reply
-		if update.message.reply_to_message and text == 'save':
+		if update.message.reply_to_message != None and text == 'save':
 			reply_message = update.message.reply_to_message
 			reply_user = reply_message.from_user
 
