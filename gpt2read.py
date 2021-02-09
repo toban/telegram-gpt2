@@ -8,7 +8,7 @@ while True:
 	generated = gpt2.generate(sess, model_name="124M", return_as_list=True)
 	single_text = generated[0]
 	print(single_text)
-	f = open("demofile2.txt", "a")
+	f = open("demo.txt", "a")
 	f.write(single_text)
 	f.write("\n")
 	f.close()

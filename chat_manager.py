@@ -58,7 +58,7 @@ class ChatManager:
 
 		if self.training:
 			self.logger.info("getting messages, ignoring")
-			update.message.reply_text("Calcumalating ... " + self.prefix_message)
+			update.message.reply_text("Currently thinking real hard...")
 			return
 
 		username = update.message.from_user.name
@@ -70,6 +70,23 @@ class ChatManager:
 
 
 		self.reply_message = update.message
+		text = update.message.text
+
+		# if message was a reply
+		if update.message.reply_to_message and text == 'save':
+			reply_message = update.message.reply_to_message
+			reply_user = reply_message.from_user
+
+			if not reply_user.is_bot:
+				return
+
+
+			message_to_save = reply_user.username + ': ' + reply_message.text
+			update.message.reply_text('Would write: ' + message_to_save)
+			return
+
+
+
 		bot_name = self.setup['user_to_bot'][username]
 		user_text_name = self.setup['names'][bot_name]
 
