@@ -3,6 +3,7 @@
 ## Requirements
 
 - python 3.7 ([pyenv](https://github.com/pyenv/pyenv-installer) is great)
+- `apt-get install libffi-dev libssl-dev`
 - `pip install -r requirements.txt`
 - `apt-get install vorbis-tools espeak`
 
