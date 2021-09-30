@@ -1,5 +1,11 @@
 # telegram-gpt2
 
+## Requirements
+
+- python 3.7 ([pyenv](https://github.com/pyenv/pyenv-installer) is great)
+- `pip install -r requirements.txt`
+- `apt-get install vorbis-tools espeak`
+
 Create an input.txt file like such and run gpt2simple.py
 
 ```
@@ -10,10 +16,6 @@ username2: Im responding to that
 after training
 
 you can run gpt2read.py to get some more samples otherwise they are found in demo.tx from training
-
-`
-apt-get install vorbis-tools espeak
-`
 
 Create a copy of config.py and fill in the fields as config.py.template
 
